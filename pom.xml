@@ -12,10 +12,12 @@
 	<artifactId>toyDbWebAgent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>toyDbWebAgent</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>nareshjs</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -45,7 +47,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.12</version>
+				<configuration>
+					<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+					<repository>${docker.image.prefix}/toydbwebagent</repository>
+					<resources>
+						<resource>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
-
 </project>
